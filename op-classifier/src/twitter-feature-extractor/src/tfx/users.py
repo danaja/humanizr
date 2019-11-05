@@ -72,7 +72,7 @@ class UserSet:
         self.user_ids = {}
         self.limit = conf.limit
 
-        for label, label_id in self.labels.iteritems():
+        for label, label_id in self.labels.items():
             self.user_ids[label] = self.connection.get_users_for_label(label_id)
 
         self.ignore_number = conf.ignore_number
