@@ -66,7 +66,7 @@ class UserSet:
         #except (AttributeError, TypeError):
         #    print "Didn't find mysql, trying files..."
         #    self.connection = database.TextFile(**conf.files)
-	self.connection = database.JSONFiles(tweet_dir)
+        self.connection = database.JSONFiles(tweet_dir)
 
         self.labels = conf.labels
         self.user_ids = {}

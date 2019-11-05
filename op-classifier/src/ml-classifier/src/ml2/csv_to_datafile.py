@@ -13,7 +13,7 @@ import time
 
 def read_params(argv):
 	if(len(argv)<3):
-		print 'Usage: csv_to_datafile.py csv_file_path data_file_path'
+		print('Usage: csv_to_datafile.py csv_file_path data_file_path')
 		sys.exit()
 	params=dict()
 	params['csv_file_path']=argv[1]
@@ -60,16 +60,8 @@ def main():
 
 		json_file_data['users'][user_code]['label']=label
 	json_file_data['parameters']['labels']=labels
-	print 'Writing '+str(len(json_file_data['users']))+' records to output file '+params['data_file_path']
+	print('Writing '+str(len(json_file_data['users']))+' records to output file '+params['data_file_path'])
 	json.dump(json_file_data,open(params['data_file_path'],'w'))
-
-
-
-
-
-
-
-
 	fin.close()
 
 if __name__=='__main__':

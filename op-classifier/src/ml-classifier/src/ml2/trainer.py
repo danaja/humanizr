@@ -20,4 +20,4 @@ class Trainer:
 		This method accepts a data set and returns a model which has been trained on
 		the data set.
 		"""
-		raise Exception, 'train method is not implemented'
+		raise Exception('train method is not implemented')

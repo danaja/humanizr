@@ -128,7 +128,7 @@ class KTopFeatureBase(FeatureBase):
     def init_with_user(self, label, user):
         user_entities = self.get_data(user)
 	
-        for entity, entity_count in user_entities.iteritems():
+        for entity, entity_count in user_entities.items():
             self.label_counters[label][entity] += entity_count
 
     """
@@ -147,10 +147,10 @@ class KTopFeatureBase(FeatureBase):
 
         logging.debug("Done filling the defaultdicts, about to sort etc")
 
-        top_differences_1 = sorted(difference_1.iteritems(),
+        top_differences_1 = sorted(difference_1.items(),
             key=operator.itemgetter(1),
             reverse=True)
-        top_differences_2 = sorted(difference_2.iteritems(),
+        top_differences_2 = sorted(difference_2.items(),
             key=operator.itemgetter(1),
             reverse=True)
 
@@ -171,85 +171,85 @@ class KTopFeatureBase(FeatureBase):
     """
 
     def finish_init(self):
-	if len(self.labels) > 2:
-		labels = self.labels.keys()
-		#computes the idf for each 'thing' (term, stem, etc.)
-		idf = {}
-		for label in labels:
-			for thing in self.label_counters[label]:
-				if thing not in idf:
-					doc_count=0
-					for label in labels:
-						if thing in self.label_counters[label]:
-							doc_count+=1
-					idf_score = float(len(labels))/doc_count
-					idf[thing] = numpy.log(idf_score)
+        if len(self.labels) > 2:
+            labels = self.labels.keys()
+            #computes the idf for each 'thing' (term, stem, etc.)
+            idf = {}
+            for label in labels:
+                for thing in self.label_counters[label]:
+                    if thing not in idf:
+                        doc_count=0
+                        for label in labels:
+                            if thing in self.label_counters[label]:
+                                doc_count+=1
+                        idf_score = float(len(labels))/doc_count
+                        idf[thing] = numpy.log(idf_score)
 
-		#finds the most frequent term for each label
-		max_freqs = {}
-		for label in labels:
-			max_f = 0
-			for thing,freq in self.label_counters[label].items():
-				if freq > max_f:
-					max_f = freq
-					max_freqs[label] = thing
+            #finds the most frequent term for each label
+            max_freqs = {}
+            for label in labels:
+                max_f = 0
+                for thing,freq in self.label_counters[label].items():
+                    if freq > max_f:
+                        max_f = freq
+                        max_freqs[label] = thing
 
-		tf_idf={}
-		for label in labels:
-			tf_idf[label] = {}
-			for thing, freq in self.label_counters[label].items():
-				tf = 0.5 + ((0.5*freq)/self.label_counters[label][max_freqs[label]])
-				tf_idf[label][thing] = tf * idf[thing]
+            tf_idf={}
+            for label in labels:
+                tf_idf[label] = {}
+                for thing, freq in self.label_counters[label].items():
+                    tf = 0.5 + ((0.5*freq)/self.label_counters[label][max_freqs[label]])
+                    tf_idf[label][thing] = tf * idf[thing]
 
-		top_differences = {}
-		k_tops = {}
-		self.k_top = []
-		get_entity = operator.itemgetter(0)
-		for label in labels:
-			top_differences[label] = sorted(tf_idf[label].iteritems(), key = operator.itemgetter(1), reverse=True)
-			k_tops[label] = map(get_entity, top_differences[label][:self.k])
-			self.k_top += k_tops[label]
+            top_differences = {}
+            k_tops = {}
+            self.k_top = []
+            get_entity = operator.itemgetter(0)
+            for label in labels:
+                top_differences[label] = sorted(tf_idf[label].items(), key = operator.itemgetter(1), reverse=True)
+                k_tops[label] = map(get_entity, top_differences[label][:self.k])
+                self.k_top += k_tops[label]
 
-		self.info = {}
-		for label in labels:
-			self.info[label] = k_tops[label]
-		self.info["order"] = labels
-	else:
-		label_1 = self.labels.keys()[0]
-		label_2 = self.labels.keys()[1]
-		difference_1 = {}	
-		for thing in self.label_counters[label_1]:
-		    difference_1[thing] = (self.label_counters[label_1][thing] -
-		        self.label_counters[label_2][thing])
+            self.info = {}
+            for label in labels:
+                self.info[label] = k_tops[label]
+            self.info["order"] = labels
+        else:
+            label_1 = self.labels.keys()[0]
+            label_2 = self.labels.keys()[1]
+            difference_1 = {}	
+            for thing in self.label_counters[label_1]:
+                difference_1[thing] = (self.label_counters[label_1][thing] -
+                    self.label_counters[label_2][thing])
 
-		difference_2 = {}
-		for thing in self.label_counters[label_2]:
-		    difference_2[thing] = (self.label_counters[label_2][thing] -
-		        self.label_counters[label_1][thing])
+            difference_2 = {}
+            for thing in self.label_counters[label_2]:
+                difference_2[thing] = (self.label_counters[label_2][thing] -
+                    self.label_counters[label_1][thing])
 
-		logging.debug("Done filling the defaultdicts, about to sort etc")
+            logging.debug("Done filling the defaultdicts, about to sort etc")
 
-		top_differences_1 = sorted(difference_1.iteritems(),
-		    key=operator.itemgetter(1),
-		    reverse=True)
+            top_differences_1 = sorted(difference_1.items(),
+                key=operator.itemgetter(1),
+                reverse=True)
 
-		top_differences_2 = sorted(difference_2.iteritems(),
-		    key=operator.itemgetter(1),
-		    reverse=True)
+            top_differences_2 = sorted(difference_2.items(),
+                key=operator.itemgetter(1),
+                reverse=True)
 
-		logging.debug("Done sorting")
+            logging.debug("Done sorting")
 
-		get_entity = operator.itemgetter(0)
-		k_top_1 = map(get_entity, top_differences_1[:self.k])
-		k_top_2 = map(get_entity, top_differences_2[:self.k])
-		self.k_top = k_top_1 + k_top_2
+            get_entity = operator.itemgetter(0)
+            k_top_1 = map(get_entity, top_differences_1[:self.k])
+            k_top_2 = map(get_entity, top_differences_2[:self.k])
+            self.k_top = k_top_1 + k_top_2
 
-		self.info = {
-		    label_1: k_top_1,
-		    label_2: k_top_2,
-		    "order": [label_1, label_2],
-		}
-        logging.debug("Figured out k-top for %s" % self)
+            self.info = {
+                label_1: k_top_1,
+                label_2: k_top_2,
+                "order": [label_1, label_2],
+            }
+            logging.debug("Figured out k-top for %s" % self)
     
     def extract_feature(self, user):
         # Returns a list
@@ -362,128 +362,128 @@ class RetweetTweetRatio(RatioFeatureBase):
 
 class NewWordRatio(RatioFeatureBase):
     def extract_feature(self, user):
-         words = user.data['words']
-	 try:
-         	return [float(len(set(words))) / float(len(words))]
-	 except:
-		return [float(0)]
+        words = user.data['words']
+        try:
+            return [float(len(set(words))) / float(len(words))]
+        except:
+            return [float(0)]
 
     def get_needed_entities(self):
         return ['words']
 
 class NewHashtagRatio(RatioFeatureBase):
     def extract_feature(self, user):
-         hashtags = user.data['hashtags']
-	 if len(hashtags) == 0:
-		return [0]
-	 else:
-		return [float(len(set(hashtags))) / float(len(hashtags))]
+        hashtags = user.data['hashtags']
+        if len(hashtags) == 0:
+            return [0]
+        else:
+            return [float(len(set(hashtags))) / float(len(hashtags))]
 
     def get_needed_entities(self):
          return ['hashtags']
 
 class AvgWordsPerTweetRatio(RatioFeatureBase):
     def extract_feature(self, user):
-         num_tweets = user.data['num_tweets']
-	 words = user.data['words']
-	 avg_tweet_length = float(len(words)) / float(num_tweets)
-	 return [avg_tweet_length]
+        num_tweets = user.data['num_tweets']
+        words = user.data['words']
+        avg_tweet_length = float(len(words)) / float(num_tweets)
+        return [avg_tweet_length]
 
     def get_needed_entities(self):
          return ['words', 'num_tweets']
 
 class AvgWordLength(RatioFeatureBase):
     def extract_feature(self, user):
-	words = user.data['words']
-	char_total = sum(len(word) for word in words)
-	try:
-		avg_word_length = float(char_total) / float(len(words))
-	except:
-		avg_word_length = float(0)
-	return [avg_word_length]
+        words = user.data['words']
+        char_total = sum(len(word) for word in words)
+        try:
+            avg_word_length = float(char_total) / float(len(words))
+        except:
+            avg_word_length = float(0)
+        return [avg_word_length]
 
     def get_needed_entities(self):
          return ['words']
 
 class TitlesPerWordRatio(RatioFeatureBase):
    def extract_feature(self, user):
-	 words = user.data['words']
-	 title_words = []
-	 for word in words:
-		if word.istitle():
-			title_words.append(word)
-         return [float(len(title_words)) / float(len(words))]
+        words = user.data['words']
+        title_words = []
+        for word in words:
+                if word.istitle():
+                    title_words.append(word)
+                return [float(len(title_words)) / float(len(words))]
 
    def get_needed_entities(self):
          return ['words']
 
 class AllCapsWordRatio(RatioFeatureBase):
-   def extract_feature(self, user):
-	 words = user.data['words']
+    def extract_feature(self, user):
+        words = user.data['words']
 
-	 counter = 0
-	 for word in words:
-		if word.isupper():
-			counter += 1
-	 return [float(counter) / float(len(words))]
+        counter = 0
+        for word in words:
+            if word.isupper():
+                counter += 1
+        return [float(counter) / float(len(words))]
 
-   def get_needed_entities(self):
-	return ['words']
+    def get_needed_entities(self):
+        return ['words']
 
 class PersonalPronounCount(RatioFeatureBase):
     def extract_feature(self, user):
-	 try:
-		 count = 0
-		 personal_pronouns = ['my', 'i', 'me', 'i\'m', 'i\'ll', 'mine']
-		 words = user.data['words']
-		 for word in words:
-			if word.lower() in personal_pronouns:
-				count += 1
-		 return [float(count) / float(len(words))]
-	 except:
-		 return [0]
+        try:
+             count = 0
+             personal_pronouns = ['my', 'i', 'me', 'i\'m', 'i\'ll', 'mine']
+             words = user.data['words']
+             for word in words:
+                if word.lower() in personal_pronouns:
+                    count += 1
+             return [float(count) / float(len(words))]
+        except:
+            return [0]
 
     def get_needed_entities(self):
          return ['words']
 
 class RepeatedPunctuationFrequency(RatioFeatureBase):
-   def extract_feature(self, user):
-	 re_punc = '(\!|\"|\#|\$|\%|\&|\'|\(|\)|\*|\+|\,|\-|\.|\/|\:|\;|\<|\=|\>|\?|\@|\[|\\|\]|\^|\_|\`|\{|\|\|}\|\~){2,}'
-	 re_http = '(^(?!http))'
-	 count = 0
-	 num_tweets = user.data['num_tweets']
-	 words = user.data['words']
-	 for word in words:
-		if re.search(re_punc, word) and re.search(re_http, word):
-			count += 1
-	 return [float(count)/float(num_tweets)]
+    def extract_feature(self, user):
+        re_punc = '(\!|\"|\#|\$|\%|\&|\'|\(|\)|\*|\+|\,|\-|\.|\/|\:|\;|\<|\=|\>|\?|\@|\[|\\|\]|\^|\_|\`|\{|\|\|}\|\~){2,}'
+        re_http = '(^(?!http))'
+        count = 0
+        num_tweets = user.data['num_tweets']
+        words = user.data['words']
+        for word in words:
+            if re.search(re_punc, word) and re.search(re_http, word):
+                count += 1
+        return [float(count)/float(num_tweets)]
 
-   def get_needed_entities(self):
-	 return ['words', 'num_tweets']
+    def get_needed_entities(self):
+	    return ['words', 'num_tweets']
 			
 class PunctuationFrequency(RatioFeatureBase):
-   def extract_feature(self, user):
+    def extract_feature(self, user):
 	 #re_punc = '(\!|\"|\#|\$|\%|\&|\'|\(|\)|\*|\+|\,|\-|\.|\/|\:|\;|\<|\=|\>|\?|\@|\[|\\|\]|\^|\_|\`|\{|\|\|}\|\~)'
-	 re_punc = '(\[|\\|\]|\^|\_|\`|\{|\|\|}\|\~)'
-	 re_http = '(^(?!http))'
-	 count = 0
-	 num_tweets = user.data['num_tweets']
-	 words = user.data['words']
-	 for word in words:
-		if re.search(re_punc, word) and re.search(re_http, word):
-			count += 1
-	 return [float(count)/float(num_tweets)]
+        re_punc = '(\[|\\|\]|\^|\_|\`|\{|\|\|}\|\~)'
+        re_http = '(^(?!http))'
+        count = 0
+        num_tweets = user.data['num_tweets']
+        words = user.data['words']
+        for word in words:
+            if re.search(re_punc, word) and re.search(re_http, word):
+                count += 1
+        return [float(count)/float(num_tweets)]
 
-   def get_needed_entities(self):
-	 return ['words', 'num_tweets']
+    def get_needed_entities(self):
+	    return ['words', 'num_tweets']
 
 class DescriptionLength(RatioFeatureBase):
     def extract_feature(self, user):
         description = user.data['description']
-	try:
-       		return [float(len(description))]
-	except:
-		return [0]
+        try:
+                return [float(len(description))]
+        except:
+            return [0]
 
     def get_needed_entities(self):
         return ['description']

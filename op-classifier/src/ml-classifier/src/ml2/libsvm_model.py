@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 linear_svm_model.py
@@ -9,10 +8,10 @@ Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 
 import sys
 import os
-from model import Model, Prediction
+from .model import Model, Prediction
 import subprocess
 import logging
-import cPickle as pickle
+import pickle
 import json
 import tempfile
 
@@ -28,9 +27,9 @@ class LibSVMModel(Model):
 		self._orig_model_file=model_file
 		self._model_file=os.path.join(tmp_folder_location,model_file) 
 
-                # Fully specify the LIBSVM path so that we can call it from the
-                # command line in predict()
-                svm_path = os.path.join(os.path.join(os.path.split(__file__)[0], 'algs'), 'libsvm-3.1')                
+		# Fully specify the LIBSVM path so that we can call it from the
+		# command line in predict()
+		svm_path = os.path.join(os.path.join(os.path.split(__file__)[0], 'algs'), 'libsvm-3.1')                
 		self._predictor_package_path=os.path.join(svm_path, 'svm-predict')
 
                 
@@ -129,7 +128,7 @@ class LibSVMModel(Model):
 		args.append(output_filename)
 		#logging.debug( 'args for predict'
 		#logging.debug( args
-                fnull=open(os.devnull,'w')
+		fnull=open(os.devnull,'w')
 		#p=subprocess.Popen(args,stdout=subprocess.PIPE)
 		
 		p=subprocess.call(args, stdout=fnull)

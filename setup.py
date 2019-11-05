@@ -8,7 +8,7 @@ setup(
     version = '1.0.0',
     packages = ['op-classifier'],
     package_dir = {'op-classifier': 'op-classifier'},
-    install_requires = ['python-cjson'],
+    install_requires = ['smartopen'],
     author = 'James McCorriston',
     author_email = 'james.mccorriston@mail.mcgill.ca',
     description = 'A tool for classifying Twitter users as Organizations or Personal accounts. Includes feature extraction and SVM classification.'

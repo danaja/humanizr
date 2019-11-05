@@ -36,9 +36,9 @@ class DataSet:
 					self.__items[item_name] = (item['feature_vector'], self.__labels[this_label])
 			except (KeyError, ValueError):
 				raise BadlyFormattedFile
-		except IOError:
-			raise FileNotFoundError
-
+		except IOError as e:
+			#raise FileNotFoundError(e)
+			raise e
 		# Now remove any rows that don't have the expected number of features
 		# Temp measure for "Both" dataset as some users have no network data
 		self.remove_problematic_rows()
@@ -66,7 +66,7 @@ class DataSet:
 		return self.__parameters[:]
 
 	def add_item(self, item, features, label):
-		if (type(item) == type('') or type(item)==type(unicode(''))) and type(features) == type([]) and type(label) == type(1):
+		if (type(item) == type('') or type(item)==type(str(''))) and type(features) == type([]) and type(label) == type(1):
 			self.__items[item] = (features, label)
 		else:
 			# Features should actually be a list of floats - how to enforce?
@@ -105,21 +105,19 @@ class DataSet:
 		# TODO
 		for item in self.get_items():
 			features=self.__items[item][0]
-			for feature_index in xrange(len(features)):
+			for feature_index in range(len(features)):
 				try:
 					features[feature_index]=features[feature_index]*1.0/num_tweets
 				except ZeroDivisionError:
 					raise
 					
-			
-		
 	def normalize_to_unit_vector(self):
 		# Each feature vector is normalized to a unit vector
 		for item in self.get_items():
 			features=self.__items[item][0]
 			# Find the norm of the feature vector
 			norm=numpy.sqrt(numpy.dot(numpy.array(features),numpy.array(features)))
-			for feature_index in xrange(len(features)):
+			for feature_index in range(len(features)):
 				try:
 			 		features[feature_index]=features[feature_index]*1.0/norm
 					
@@ -145,7 +143,7 @@ class DataSet:
 		#
 		log_decision_dict=dict()
 		
-		for feature_index in xrange(feature_vector_length):
+		for feature_index in range(feature_vector_length):
 				feature_values=[self.get_features(item)[feature_index] for item in self.get_items()]
 				
 				
@@ -160,44 +158,43 @@ class DataSet:
 					
 		#
 		for item in self.get_items():
-				features=self.__items[item][0]
-				for feature_index in xrange(feature_vector_length):
-					if(log_decision_dict[feature_index]):
-						try:
-					 		features[feature_index]=numpy.log(features[feature_index]-observed_min_values[feature_index]+1)
-						except :
-							# can only occur if the feature is a constant.
-							# in this case, set the feature values to max_value
-							raise
-					else:
-						try:
-							features[feature_index]=((features[feature_index]-observed_min_values[feature_index])*1.0/(observed_max_values[feature_index]-observed_min_values[feature_index]))*(1-0)+0
-				 		except:
-							pass
+			features=self.__items[item][0]
+			for feature_index in range(feature_vector_length):
+				if(log_decision_dict[feature_index]):
+					try:
+						features[feature_index]=numpy.log(features[feature_index]-observed_min_values[feature_index]+1)
+					except :
+						# can only occur if the feature is a constant.
+						# in this case, set the feature values to max_value
+						raise
+				else:
+					try:
+						features[feature_index]=((features[feature_index]-observed_min_values[feature_index])*1.0/(observed_max_values[feature_index]-observed_min_values[feature_index]))*(1-0)+0
+					except:
+						pass
 						
-			
 	def log_normalize_using_training_set_values(self,observed_min_values):
 		
 		if(len(self.get_items())==0):
 			return
 		feature_vector_length=len(self.get_features(self.get_items()[0]))
-		if(feature_vector_length<>len(observed_min_values)):
-				#print feature_vector_length
-				#print len(observed_min_values)
-				raise FeatureLengthMismatchException
+		if(feature_vector_length != len(observed_min_values)):
+			#print feature_vector_length
+			#print len(observed_min_values)
+			raise FeatureLengthMismatchException
 		#
 		for item in self.get_items():
-				features=self.__items[item][0]
-				for feature_index in xrange(feature_vector_length):
-					try:
-						#print "%f : %f" % (features[feature_index], observed_min_values[feature_index]) 
-						if(features[feature_index]<observed_min_values[feature_index]):
-							features[feature_index]=observed_min_values[feature_index]
-					 	features[feature_index]=numpy.log(features[feature_index]-observed_min_values[feature_index]+1)
-					except :
-						# can only occur if the feature is a constant.
-						# in this case, set the feature values to max_value
-						raise
+			features=self.__items[item][0]
+			for feature_index in range(feature_vector_length):
+				try:
+					#print "%f : %f" % (features[feature_index], observed_min_values[feature_index]) 
+					if(features[feature_index]<observed_min_values[feature_index]):
+						features[feature_index]=observed_min_values[feature_index]
+					features[feature_index]=numpy.log(features[feature_index]-observed_min_values[feature_index]+1)
+				except :
+					# can only occur if the feature is a constant.
+					# in this case, set the feature values to max_value
+					raise
 			
 	def log_normalize(self):
 		'''
@@ -214,7 +211,7 @@ class DataSet:
 		observed_min_values=[0]*feature_vector_length
 		observed_max_values=[0]*feature_vector_length
 		# For each feature
-		for feature_index in xrange(feature_vector_length):
+		for feature_index in range(feature_vector_length):
 				feature_values=[self.get_features(item)[feature_index] for item in self.get_items()]
 				
 				
@@ -225,7 +222,7 @@ class DataSet:
 		
 		for item in self.get_items():
 				features=self.__items[item][0]
-				for feature_index in xrange(feature_vector_length):
+				for feature_index in range(feature_vector_length):
 					try:
 					 	features[feature_index]=numpy.log(features[feature_index]-observed_min_values[feature_index]+1)
 					except :
@@ -255,7 +252,7 @@ class DataSet:
 			observed_min_values=[0]*feature_vector_length
 			observed_max_values=[0]*feature_vector_length
 			# For each feature
-			for feature_index in xrange(feature_vector_length):
+			for feature_index in range(feature_vector_length):
 				feature_values=[self.get_features(item)[feature_index] for item in self.get_items()]
 				
 				
@@ -267,7 +264,7 @@ class DataSet:
 			
 			for item in self.get_items():
 					features=self.__items[item][0]
-					for feature_index in xrange(feature_vector_length):
+					for feature_index in range(feature_vector_length):
 						try:
 					 		features[feature_index]=((features[feature_index]-observed_min_values[feature_index])*1.0/(observed_max_values[feature_index]-observed_min_values[feature_index]))*(max_value-min_value)+min_value
 							
@@ -339,29 +336,14 @@ class DataSet:
 				orig_features=self.__items[item][0]
 				label=self.__items[item][1]
 				new_feature_vector=[]
-				for feature_index in xrange(feature_vector_length):
+				for feature_index in range(feature_vector_length):
 					if(feature_index not in feature_indices_to_filter):
 						new_feature_vector.append(orig_features[feature_index])
 				# Now replace the items features by the new one
-				self.__items[item] = (new_feature_vector, label)
-			
-				
-			
-					
-				
-				
-			
+				self.__items[item] = (new_feature_vector, label)	
 		else:
 			raise ValueError("Feature indices must be a list")
 		
-		
-		
-	  
-	
-		
-		
-		
-
 class BadlyFormattedFile(Exception):
 	pass
 class FeatureLengthMismatchException(Exception):

@@ -86,7 +86,7 @@ class NaiveBayesClassifier:
 		json_cats.close()
 		#Loads the list of most common words to ignore.
 		self.common = create_common_words_list(n, twitter)
-		print '%d most common words ignored.' % (len(self.common))
+		print('%d most common words ignored.' % (len(self.common)))
 
 	#Uses the Naive bayes formula and word counts to determine a score for each category
 	#the inputted text string. Returns a dictionary whose keys are made up of the list
@@ -96,7 +96,7 @@ class NaiveBayesClassifier:
 		result = {}	
 	
 		#make sure string is in ascii
-		if isinstance(text, unicode):
+		if isinstance(text, str):
 			text = text.encode('ascii', 'xmlcharrefreplace')	
 		else:
 			text = text.decode('utf8').encode('ascii', 'xmlcharrefreplace')	

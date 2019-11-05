@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 linear_svm_model.py
@@ -9,7 +8,7 @@ Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 
 import sys
 import os
-from model import Model, Prediction
+from .model import Model, Prediction
 import subprocess
 
 
@@ -76,7 +75,7 @@ class LinearSVMModel(Model):
 			#print 'Output file :'+line
 			item=item_order[i]
 			predicted_values.set_est_label(item,line.split()[0])
-			print 'setting label for '+item
+			print('setting label for '+item)
 			i+=1
 		fin.close()
 		return(predicted_values)

@@ -6,7 +6,7 @@ import numpy
 
 def read_params(argv):
 	if(len(argv)<2):
-		print 'Usage: analyze_xvalidator_output_file.py output_file '
+		print('Usage: analyze_xvalidator_output_file.py output_file ')
 		sys.exit()
 	params=dict()
 	params['output_file']=argv[1]
@@ -30,7 +30,7 @@ def update_labelwise_precision_recall_dict(line,current_run_labelwise_precision_
 
 	
 	if(len(labels)>2):
-		print 'Non binary classification.'
+		print('Non binary classification.')
 		return {}
 	
 	if(current_run_labelwise_precision_recall_dict=={}):
@@ -38,7 +38,6 @@ def update_labelwise_precision_recall_dict(line,current_run_labelwise_precision_
 			current_run_labelwise_precision_recall_dict[label]={'TP':0,'TN':0,'FP':0,'FN':0}
 			
 	for label in labels:
-
 		fold_true_positive_this_label=round(current_fold_labelwise_accuracy[label]['total_count']*current_fold_labelwise_accuracy[label]['accuracy'])
 		fold_false_negative_this_label=round(current_fold_labelwise_accuracy[label]['total_count']*(1.0-current_fold_labelwise_accuracy[label]['accuracy']))
 		fold_true_negative_this_label=round(current_fold_labelwise_accuracy[other_label_dict[label]]['total_count']*current_fold_labelwise_accuracy[other_label_dict[label]]['accuracy'])
@@ -64,19 +63,19 @@ def print_info(labelwise_fscore_dict_list):
 		precision_array=[x[label]['precision'] for x in labelwise_fscore_dict_list]
 		recall_array=[x[label]['recall'] for x in labelwise_fscore_dict_list]
 		fscore_array=[x[label]['f_score'] for x in labelwise_fscore_dict_list]
-		print 'label'+str(label)
-		print 'Avg Precision '
-		print numpy.mean(precision_array)
-		print 'std Precision '
-		print numpy.std(precision_array)
-		print 'Avg Recall '
-		print numpy.mean(recall_array)
-		print 'std Recall '
-		print numpy.std(recall_array)
-		print 'Avg F score '
-		print numpy.mean(fscore_array)
-		print 'std F score '
-		print numpy.std(fscore_array)
+		print('label'+str(label))
+		print('Avg Precision ')
+		print(numpy.mean(precision_array))
+		print('std Precision ')
+		print(numpy.std(precision_array))
+		print('Avg Recall ')
+		print(numpy.mean(recall_array))
+		print('std Recall ')
+		print(numpy.std(recall_array))
+		print('Avg F score ')
+		print(numpy.mean(fscore_array))
+		print('std F score ')
+		print(numpy.std(fscore_array))
 
 
 
@@ -127,14 +126,14 @@ def read_file(filename):
 		labelwise_fscore= compute_labelwise_fscore(current_run_labelwise_precision_recall_dict)
 		labelwise_fscore_dict_list.append(labelwise_fscore)
 		#print labelwise_fscore
-	print 'Total number of runs'
-	print run_count
-	print 'Avergae accuracy'
-	print numpy.mean(run_accuracy_array)
-	print 'Std accuracy'
+	print('Total number of runs')
+	print(run_count)
+	print('Avergae accuracy')
+	print(numpy.mean(run_accuracy_array))
+	print('Std accuracy')
 	
-	print numpy.std(run_accuracy_array)
-	print 'Labelwise Fscores'
+	print(numpy.std(run_accuracy_array))
+	print('Labelwise Fscores')
 	print_info(labelwise_fscore_dict_list)
 
 

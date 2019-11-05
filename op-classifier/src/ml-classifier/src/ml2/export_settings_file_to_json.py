@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 export_settings_file_to_json.py
@@ -17,7 +16,7 @@ import json
 
 def main():
 	if(len(sys.argv)<2):
-		print 'Usage export_settings_file_to_json settings_file'
+		print('Usage export_settings_file_to_json settings_file')
 		return
 	input_file=sys.argv[1]
 	settings=eval(open(input_file,'r').read())

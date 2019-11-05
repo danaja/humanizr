@@ -7,11 +7,11 @@ import sys
 class CustomInstallCommand(install):
     """Customized setuptools install command - prints a friendly greeting."""
     def run(self):
-        print "Installing libsvm first"
+        print("Installing libsvm first")
         os.chdir('src/ml2/algs/libsvm-3.1')
         os.system('make clean')
         os.system('make all')
-        print "End of libsvm installation"
+        print("End of libsvm installation")
         os.chdir('../../../..')
         install.run(self)
 

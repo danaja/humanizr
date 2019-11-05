@@ -1,4 +1,3 @@
-
 from dataset import DataSet
 import random
 import logging
@@ -46,7 +45,7 @@ class XValidator:
 				folds[current_fold][0].add_item(item,self._master_dataset.get_features(item),self._master_dataset.get_label(item))
 				
 				for j in range(num_fold):
-					if(j<>current_fold):
+					if(j != current_fold):
 						folds[j][1].add_item(item,self._master_dataset.get_features(item),self._master_dataset.get_label(item))
 						
 						
@@ -76,11 +75,11 @@ class XValidator:
 			print 'Size '+str(pred.size())
 			print 'Count '+str(pred.predicted_count())
 			'''
-			print 'Accuracy (computed) '+str(pred.accuracy())
+			print('Accuracy (computed) '+str(pred.accuracy()))
 			
 			self._predictions.append(pred)
 		for pred in self._predictions:
-			print pred.predictions()
+			print(pred.predictions())
 		
 			
 	def models(self):
@@ -94,8 +93,8 @@ class XValidator:
 		
 if __name__ == '__main__':
 	
-	from trainer_factory import TrainerFactory
-	from dataset import DataSet
+	from .trainer_factory import TrainerFactory
+	from .dataset import DataSet
 	import sys
 	
 	parser = argparse.ArgumentParser(prog='xvalidator',description='Cross validate using a machine learning algorithm.')
@@ -143,13 +142,12 @@ if __name__ == '__main__':
 	avg_accuracy=sum([pred.accuracy() for pred in xv.predictions()]) / num_preds
 	#print 'Average sensitivity:',avg_sense
 	#print 'Average specificity:',avg_spec
-	print 'Average accuracy:',avg_accuracy
+	print('Average accuracy:',avg_accuracy)
 	
 	# label based sensitivity
 	for pred in xv.predictions():
-		print pred.sensitivity_by_label()
+		print(pred.sensitivity_by_label())
 		
-	
 		
 	'''
 	'''

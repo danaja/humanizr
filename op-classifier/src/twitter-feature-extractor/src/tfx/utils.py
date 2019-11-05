@@ -15,7 +15,7 @@ def is_str(val):
     """
     Utility function to check if something is a string or unicode.
     """
-    return isinstance(val, basestring)
+    return isinstance(val, str)
 
 
 def is_a_feature(s):
@@ -45,7 +45,7 @@ def clean(text):
     # Get rid of other ampersand-containing things
     text = re.sub(r'&#\d+;', '', text)
 
-    for key, value in replacements.iteritems():
+    for key, value in replacements.items():
         text = text.replace(key, value)
 
     # Now remove all the other non-ascii chars

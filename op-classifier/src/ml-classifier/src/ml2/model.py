@@ -1,4 +1,5 @@
-import cPickle as pickle
+import pickle
+
 class Prediction:
 	
 	def __init__(self,data_set,predictions=None):
@@ -90,4 +91,4 @@ class Model:
 		This method uses the model to assign a label to each item in the data set.  The return value
 		is a Prediction object.
 		"""
-		raise Exception, 'predict is not implemented'
+		raise Exception('predict is not implemented')

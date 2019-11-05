@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 libsvm_trainer.py
@@ -12,11 +11,11 @@ import os
 import shutil
 #import matplotlib as mplib
 #mplib.use('macosx')
-from trainer import Trainer
-from libsvm_model import LibSVMModel
+from .trainer import Trainer
+from .libsvm_model import LibSVMModel
 import subprocess
 import numpy
-from dataset import DataSet
+from .dataset import DataSet
 import logging
 import matplotlib.pyplot as plt
 import tempfile
@@ -42,12 +41,8 @@ class LibSVMTrainer(Trainer):
 
 		self.trainer_settings['temporary_folder_location']=tempfile.mkdtemp()
 
-		
-		
-
 		self.trainer_settings['training_set_filename']='training_set.libsvm'+'_'+str(LibSVMTrainer._file_suffix)
 		
-
 		self.trainer_settings['model_filename']='learned_model_file.libsvm'+'_'+str(LibSVMTrainer._file_suffix)
 		logging.debug('Temporary folder:' +self.trainer_settings['temporary_folder_location'])
 	#
@@ -192,7 +187,7 @@ class LibSVMTrainer(Trainer):
 				
 				folds[current_fold][0].add_item(item,data_set.get_features(item),data_set.get_label(item))
 				for j in range(num_fold):
-					if(j<>current_fold):
+					if(j != current_fold):
 						folds[j][1].add_item(item,data_set.get_features(item),data_set.get_label(item))
 						
 						
@@ -214,9 +209,9 @@ class LibSVMTrainer(Trainer):
 		g_min=self.trainer_settings['grid_search_parameters']['g_min']
 		g_max=self.trainer_settings['grid_search_parameters']['g_max']
 		accuracy_matrix=numpy.zeros((c_max-c_min+1,g_max-g_min+1))
-		for c in xrange(c_min,c_max):
+		for c in range(c_min,c_max):
 			logging.debug ('c :'+str(c))
-			for g in xrange(g_min,g_max):
+			for g in range(g_min,g_max):
 				logging.debug ('g :'+str(g))
 				# Change the package parameters accrodingly
 				if(self.trainer_settings['grid_search_parameters']['exp']==True):

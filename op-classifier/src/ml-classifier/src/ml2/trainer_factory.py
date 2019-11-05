@@ -1,5 +1,5 @@
-import linear_svm_trainer
-import libsvm_trainer
+from .linear_svm_trainer import LinearSVMModel, LinearSVMTrainer,Trainer
+from .libsvm_trainer import LibSVMModel, LibSVMTrainer, DataSet,Trainer
 #import gbm_trainer # commented out for now. If u need to use GBDT, please uncomment. rpy2 needs to be installed.
 
 

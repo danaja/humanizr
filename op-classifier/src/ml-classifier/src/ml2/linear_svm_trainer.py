@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 linear_svm_trainer.py
@@ -10,8 +9,8 @@ Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 import sys
 import os
 import time
-from trainer import Trainer
-from linear_svm_model import LinearSVMModel
+from .trainer import Trainer
+from .linear_svm_model import LinearSVMModel
 import subprocess
 
 class LinearSVMTrainer(Trainer):
@@ -54,8 +53,8 @@ class LinearSVMTrainer(Trainer):
 		"""
 		#print 'File Suffix: '+str(LinearSVMTrainer._file_suffix)
 		
-		print 'Training on dataset '
-		print data_set.get_items()
+		print('Training on dataset ')
+		print(data_set.get_items())
 		
 		'''
 		`train' Usage
@@ -111,7 +110,7 @@ class LinearSVMTrainer(Trainer):
 		model_file=self.trainer_settings['temporary_folder_location']+self.trainer_settings['model_filename']+'_'+str(LinearSVMTrainer._file_suffix)
 		
 		args.append(model_file)
-		print args
+		print(args)
 		#print 'args for train'
 		#print args
 		# call train

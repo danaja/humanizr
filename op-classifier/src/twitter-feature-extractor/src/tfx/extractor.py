@@ -9,7 +9,7 @@ from tfx import errors, features, users, utils
 class FeatureExtractor:
     def __init__(self, conf, tweet_dir):
         self.conf = conf
-	self.tweet_dir = tweet_dir
+        self.tweet_dir = tweet_dir
 
         # If it isn't explicitly set, will default to conf filename + _output
         output_file = conf.output_file

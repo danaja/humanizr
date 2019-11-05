@@ -51,7 +51,7 @@ class WordExtractor(TweetExtractorBase):
     entity = 'words'
 
     def process_text(self, text):
-	text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
+        text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
         return filter(len, text.split(' '))
 
 
@@ -59,11 +59,11 @@ class DigramExtractor(TweetExtractorBase):
     entity = 'digrams'
 
     def process_text(self, text):
-	text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
+        text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
         text = ' %s ' % text
         digrams = []
 
-        for i in xrange(len(text) - 1):
+        for i in range(len(text) - 1):
             digram = '%c%c' % (text[i], text[i+1])
             if digram != '  ':
                 digrams.append(digram)
@@ -75,11 +75,11 @@ class TrigramExtractor(TweetExtractorBase):
     entity = 'trigrams'
 
     def process_text(self, text):
-	text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
+        text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
         text = ' %s ' % text
         trigrams = []
 
-        for i in xrange(len(text) - 2):
+        for i in range(len(text) - 2):
             trigram = '%c%c%c' % (text[i], text[i+1], text[i+2])
             trigrams.append(trigram)
 
@@ -90,7 +90,7 @@ class StemExtractor(TweetExtractorBase):
     entity = 'stems'
 
     def process_text(self, text):
-	text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
+        text = ''.join(ch for ch in text.lower() if ch not in exclude_punctuation)
         return map(lovins.stem, filter(len, text.split(' ')))
 
 
@@ -258,7 +258,7 @@ class NumHashtagsExtractor(NumMentionsExtractor):
 Initialise all the extractors and put them in the relevant dictionary
 """
 things = dict(locals())
-for name, thing in things.iteritems():
+for name, thing in things.items():
     if (inspect.isclass(thing) and
         issubclass(thing, EntityExtractorBase) and
         thing.entity is not None):

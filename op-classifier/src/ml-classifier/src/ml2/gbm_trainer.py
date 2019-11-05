@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # encoding: utf-8
 """
 gbm_trainer.py

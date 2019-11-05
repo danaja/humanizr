@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 """
 linear_svm_model.py
@@ -9,12 +8,12 @@ Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 
 import sys
 import os
-from model import Model, Prediction
+from .model import Model, Prediction
 import subprocess
 import logging
 import rpy2.robjects as ro
 from rpy2.robjects.packages import importr
-import cPickle as pickle
+import pickle
 
 
 

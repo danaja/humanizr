@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/home/dmal/envs/py37/bin/python3.7
 
 """
 All this file has to do is load the conf file and see if it works properly.
