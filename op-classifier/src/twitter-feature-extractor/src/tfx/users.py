@@ -12,7 +12,12 @@ class User:
     def __init__(self, user_id, profile, tweets):
         self.user_id = user_id
         self.profile = profile
-        self.username = profile['screen_name']
+        if "screen_name" in profile:
+            self.username = profile['screen_name']
+        elif "name" in profile:
+            self.username = profile["name"].replace(" ","").lower()
+        else:
+            self.username="NONAME"
         self.tweets = tweets
         self.data = {}
 
@@ -77,6 +82,8 @@ class UserSet:
 
         self.ignore_number = conf.ignore_number
         self.ignore_start = conf.ignore_start
+        if self.ignore_start is None:
+            self.ignore_start = 0
 
     def get_users(self, label):
         """
