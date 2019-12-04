@@ -258,9 +258,9 @@ class KTopFeatureBase(FeatureBase):
     def get_info(self):
         return self.info
 
+
 class KTopWords(KTopFeatureBase):
     entity = 'words'
-
 
 class KTopDigrams(KTopFeatureBase):
     entity = 'digrams'

@@ -93,6 +93,7 @@ class ConfParser:
             raise errors.ConfFileError("You must set the enabled features.")
 
         enabled = self.features['enabled']
+        print(enabled)
         # enabled must be defined - non-empty dict, keys are non-empty strings
         if (type(enabled) is not dict or len(enabled) < 1 or
             any(map(lambda x: x == '' or not utils.is_str(x), enabled))):

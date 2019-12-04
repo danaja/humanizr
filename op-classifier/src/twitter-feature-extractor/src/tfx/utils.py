@@ -19,7 +19,10 @@ def is_str(val):
 
 
 def is_a_feature(s):
-    return not (s.startswith('__') or s.endswith('Base'))
+    if s.startswith('__') or s.endswith('Base') or s[0].islower():
+        return False
+    else:
+        return True
 
 
 def clean(text):

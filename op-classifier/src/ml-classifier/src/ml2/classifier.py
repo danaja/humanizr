@@ -24,8 +24,6 @@ class Classifier:
 			self._model=self._trainer.load_model(saved_model_file)
 		self._saved_model_file=saved_model_file
 		
-		
-	
 	def predictions(self):
 		return(self._prediction.predictions())
 	def accuracy(self):
@@ -125,7 +123,7 @@ if __name__ == '__main__':
 		# No training file provided.
 		# But the model file contains info about normalization min_values
 		observed_min_values=read_model_file_normalization_min_values(model_file)
-		
+	print(test_ds_file)
 	test_data_set=DataSet(test_ds_file)
 	#test_data_set.normalize_to_unit_vector()
 	test_data_set.log_normalize_using_training_set_values(observed_min_values)

@@ -1,5 +1,5 @@
 {
-'trainer_class':'libsvm_trainer.LibSVMTrainer',\
+'trainer_class':'LibSVMTrainer',\
 'trainer_settings':\
 {\
 'perform_grid_search':False,\

@@ -30,7 +30,7 @@ class DataSet:
 
 				items = data['users']
 
-				for item_name, item in items.iteritems():
+				for item_name, item in items.items():
 					this_label = item['label']
 
 					self.__items[item_name] = (item['feature_vector'], self.__labels[this_label])
@@ -73,7 +73,7 @@ class DataSet:
 			raise ValueError("arguments of wrong type (should be: string, list, int)")
 
 	def get_items(self):
-		return self.__items.keys()
+		return list(self.__items.keys())
 
 	def get_features(self, item):
 		return self.__items[item][0][:]
@@ -179,8 +179,8 @@ class DataSet:
 			return
 		feature_vector_length=len(self.get_features(self.get_items()[0]))
 		if(feature_vector_length != len(observed_min_values)):
-			#print feature_vector_length
-			#print len(observed_min_values)
+			print(feature_vector_length)
+			print(len(observed_min_values))
 			raise FeatureLengthMismatchException
 		#
 		for item in self.get_items():

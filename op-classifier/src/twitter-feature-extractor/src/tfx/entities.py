@@ -203,8 +203,13 @@ class ProfileExtractorBase(EntityExtractorBase):
     register = profile_extractors
 
     def get_user_entities(self, profile):
-        return profile[self.profile_key]
-
+        if self.profile_key in profile:
+            return profile[self.profile_key]
+        else:
+            if 'count' in self.profile_key:
+                return 0
+            else:
+                return 'NONE'
 
 class NumFollowersExtractor(ProfileExtractorBase):
     entity = 'num_followers'
@@ -249,10 +254,6 @@ class NumMentionsExtractor(OtherExtractorBase):
 class NumHashtagsExtractor(NumMentionsExtractor):
     entity = 'num_hashtags'
     needed_entity = 'hashtags'
-
-
-
-
 
 """
 Initialise all the extractors and put them in the relevant dictionary
